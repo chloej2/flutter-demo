@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/user_gallery_page.dart';
+import 'package:flutter_demo/widget/circular_loading.dart';
 import './model/user.dart';
 import './data/user_api.dart';
 import 'package:get/get.dart';
@@ -14,6 +15,7 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   List<User> _userList = [];
+  var _isLoading = false;
 
   @override
   void initState() {
@@ -32,8 +34,8 @@ class _HomepageState extends State<Homepage> {
               child: ListView.builder(
                 itemCount: _userList.length,
                 itemBuilder: (context, index) {
-                  if (_userList == null) {
-                    return Text("Loading..");
+                  if (_userList.isEmpty && !_isLoading) {
+                    return const CircularLoading();
                   } else if (_userList.length < 0) {
                     return Text("There is no list");
                   } else {
@@ -62,11 +64,13 @@ class _HomepageState extends State<Homepage> {
   }
 
   void getUsersFromApi() async {
+    _isLoading = true;
     UserApi.getUsers().then((response) {
       setState(() {
         Iterable list = json.decode(response.body);
         _userList = list.map((model) => User.fromJson(model)).toList();
       });
     });
+    _isLoading = false;
   }
 }

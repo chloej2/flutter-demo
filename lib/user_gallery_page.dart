@@ -1,10 +1,12 @@
 import 'dart:convert';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/model/user_image.dart';
+import 'package:flutter_demo/widget/circular_loading.dart';
+import 'package:flutter_demo/widget/photo_hero.dart';
 import 'package:get/get.dart';
 import 'data/user_image_api.dart';
 import 'model/user.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class UserGalleryPage extends StatefulWidget {
   final int userId;
@@ -35,59 +37,85 @@ class _UserGalleryPageState extends State<UserGalleryPage> {
         children: [
           Row(
             children: [
-              SizedBox(
-                width: 10,
-              ),
+              const SizedBox(width: 10),
               Text(
                 widget.user.name,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Expanded(child: Container()),
               IconButton(
-                  onPressed: () => Get.back(), icon: Icon(Icons.arrow_back)),
+                onPressed: () => Get.back(),
+                icon: Icon(Icons.arrow_back),
+              ),
             ],
           ),
           _userImageList.isNotEmpty
-              ? Flexible(
-                  child: GridView.count(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 5.0,
-                    mainAxisSpacing: 5.0,
-                    shrinkWrap: true,
-                    children: List.generate(
-                      20,
-                      (index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                    _userImageList[index].thumbnailPath),
-                                fit: BoxFit.cover,
-                              ),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10.0),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                )
+              ? gallery_widget()
               : _userImageList.isEmpty && _isLoading
-                  ? Align(
-                      alignment: Alignment.center,
-                      child: CircularProgressIndicator(),
-                    )
-                  : Text("Empty"),
+                  ? const CircularLoading()
+                  : const Center(
+                      child: Text(
+                      "There is no image to display",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    )),
         ],
       ),
     ));
+  }
+
+  Flexible gallery_widget() {
+    return Flexible(
+      child: GridView.count(
+        crossAxisCount: 2,
+        crossAxisSpacing: 2,
+        mainAxisSpacing: 2,
+        shrinkWrap: true,
+        children: List.generate(
+          20,
+          (index) {
+            return AnimationConfiguration.staggeredGrid(
+              position: index,
+              columnCount: 2,
+              duration: const Duration(milliseconds: 475),
+              child: SlideAnimation(
+                verticalOffset: 50.0,
+                child: FadeInAnimation(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: PhotoHero(
+                        photo: _userImageList[index].thumbnailPath,
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute<void>(
+                              builder: (BuildContext context) {
+                            return Scaffold(
+                              body: Container(
+                                alignment: Alignment(0.0, 0.0),
+                                color: Colors.black12,
+                                child: PhotoHero(
+                                  photo: _userImageList[index].imagePath,
+                                  width: MediaQuery.of(context).size.width,
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ),
+                            );
+                          }));
+                        }),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 
   void getUsersFromApi(int userId) async {
@@ -102,52 +130,3 @@ class _UserGalleryPageState extends State<UserGalleryPage> {
     });
   }
 }
-
-// class UserGalleryPage extends StatelessWidget {
-//   final int userId;
-//   final List<UserImage> userImageList;
-
-//   const UserGalleryPage({
-//     Key? key,
-//     required this.userId,
-//     required this.userImageList,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Container(
-//         child: Column(
-//           children: [
-//             TextButton(
-//               child: Icon(Icons.arrow_back),
-//               onPressed: () => Get.back(),
-//             ),
-//             Text('User Id $userId'),
-//             Text(userImageList[0].title)
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class UserGallery extends StatefulWidget {
-//   final int userId;
-//   const UserGallery({
-//     Key? key,
-//     required this.userId,
-//   }) : super(key: key);
-
-//   @override
-//   _UserGalleryState createState() => _UserGalleryState();
-// }
-
-// class _UserGalleryState extends State<UserGallery> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       child: Text(),
-//     );
-//   }
-// }
