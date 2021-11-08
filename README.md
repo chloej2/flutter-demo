@@ -22,8 +22,10 @@ Any IDE with Flutter SDK installed (ie. IntelliJ, Android Studio, VSCode etc)
 ## Getting Started
 1. [Setup Flutter](https://flutter.dev/docs/get-started/install)
 2. Clone the repo
-$ git clone https://github.com/chloej2/flutter-demo
-$ cd flutter-demo/
+``` 
+git clone https://github.com/chloej2/flutter-demo
+cd flutter-demo/
+```
 
 For help getting started with Flutter, view the [online documentation](https://flutter.io/).
 
