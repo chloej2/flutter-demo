@@ -1,8 +1,8 @@
 # flutter_demo
 
-The project aim is to create a mobile application that shows a list of users which links to a gallery of their images.
+The project is a quick demo of a mobile application created using Flutter. It displays a list of users which links to a gallery of their images.
 
-It has the following specifications:
+## Features
 * Display a list of names from http://jsonplaceholder.typicode.com/users.
 * When a name is clicked, show a collection of album images with album title from http://jsonplaceholder.typicode.com/photos.
 * When an image is clicked, show a full size image which takes most of the screen.
@@ -20,6 +20,11 @@ Any Operating System (ie. MacOS X, Linux, Windows)
 Any IDE with Flutter SDK installed (ie. IntelliJ, Android Studio, VSCode etc)
 
 ## Getting Started
+1. [Setup Flutter](https://flutter.dev/docs/get-started/install)
+2. Clone the repo
+$ git clone https://github.com/chloej2/flutter-demo
+$ cd flutter-demo/
+
 For help getting started with Flutter, view the [online documentation](https://flutter.io/).
 
 If you encounter the Error: Cannot run with sound null safety.
