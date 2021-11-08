@@ -5,6 +5,7 @@ import 'package:flutter_demo/widget/circular_loading.dart';
 import './model/user.dart';
 import './data/user_api.dart';
 import 'package:get/get.dart';
+import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -27,16 +28,42 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: const EdgeInsets.all(60),
+        color: Colors.lightBlue[100],
         child: Column(
           children: [
-            Flexible(
+            Container(
+              height: 80,
+              padding: const EdgeInsets.only(
+                  top: 40, left: 10, right: 10, bottom: 10),
+              decoration: BoxDecoration(
+                  color: Colors.yellow.shade300,
+                  boxShadow: const [
+                    BoxShadow(
+                      blurRadius: 4.0,
+                    )
+                  ]),
+              child: Row(
+                children: const [
+                  SizedBox(width: 10),
+                  Text(
+                    "Flutter Demo",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.all(20),
+              height: MediaQuery.of(context).size.height - 140,
               child: ListView.builder(
                 itemCount: _userList.length,
                 itemBuilder: (context, index) {
                   if (_userList.isEmpty && !_isLoading) {
                     return const CircularLoading();
-                  } else if (_userList.length < 0) {
+                  } else if (_userList.length <= 0) {
                     return Text("There is no list");
                   } else {
                     return InkWell(
@@ -46,11 +73,25 @@ class _HomepageState extends State<Homepage> {
                               user: _userList[index],
                             ));
                       },
-                      child: Container(
-                        padding: const EdgeInsets.all(20),
+                      child: Card(
                         margin: const EdgeInsets.only(top: 5, bottom: 5),
-                        color: Colors.red,
-                        child: Text(_userList[index].name),
+                        child: ListTile(
+                          leading: ProfilePicture(
+                            name: _userList[index].name,
+                            radius: 16,
+                            fontsize: 12,
+                          ),
+                          title: Text(
+                            _userList[index].name,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          subtitle: Text(
+                            _userList[index].email,
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        ),
                       ),
                     );
                   }
