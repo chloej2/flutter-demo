@@ -7,7 +7,6 @@ It has the following specifications:
 * When a name is clicked, show a collection of album images with album title from http://jsonplaceholder.typicode.com/photos.
 * When an image is clicked, show a full size image which takes most of the screen.
 * Animation (gallery and full page image transitions) and UI/UX
-* Anything else
 
 ## Dependencies
 * [Flutter](https://flutter.dev/)
@@ -22,3 +21,8 @@ Any IDE with Flutter SDK installed (ie. IntelliJ, Android Studio, VSCode etc)
 
 ## Getting Started
 For help getting started with Flutter, view the [online documentation](https://flutter.io/).
+
+If you encounter the Error: Cannot run with sound null safety.
+
+Change settings below:
+ Code => Preferences => Settings => Search setting, type in "flutter test" => Dart: Flutter Test Additional Args, Add item => Add "--no-sound-null-safety"
